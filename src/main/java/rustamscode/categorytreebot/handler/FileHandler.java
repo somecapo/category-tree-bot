@@ -6,8 +6,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import rustamscode.categorytreebot.telegram.Bot;
 
 @Service
-public class MessageHandler {
-    public BotApiMethod answer(Message message){
+public class FileHandler {
+    public BotApiMethod<?> answer(Message message){
         return null;
     }
 }

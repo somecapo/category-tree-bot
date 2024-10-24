@@ -1,96 +1,54 @@
 package rustamscode.categorytreebot.handler;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
+import rustamscode.categorytreebot.commands.*;
+import rustamscode.categorytreebot.repository.CategoryRepository;
 import rustamscode.categorytreebot.telegram.Bot;
 
 @Service
 @Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CommandHandler {
+    final CategoryRepository categoryRepository;
+    BotCommand botCommand;
 
-    public BotApiMethod<?> answer(Message message, Bot bot) {
-        String command = message.getText();
+    @Autowired
+    public CommandHandler(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+
+    public BotApiMethod<?> answer(Message message) {
+        String[] args = getArgs(message);
+        String command = args[0];
         switch (command) {
-            case "/start" -> {
-                return start(message);
-            }
-            case "/viewTree" -> {
-                return viewTree(message);
-            }
-            case "/addElement" -> {
-                return addElement(message);
-            }
-            case "/removeElement" -> {
-                return removeElement(message);
-            }
-            case "/help" -> {
-                return help(message);
-            }
+            case "/start" -> botCommand = new StartCommand();
+            case "/viewTree" -> botCommand = new ViewTreeCommand(categoryRepository);
+            case "/addElement" -> botCommand = new AddElementCommand(categoryRepository);
+            case "/removeElement" -> botCommand = new RemoveElementCommand(categoryRepository);
+            case "/help" -> botCommand = new HelpCommand();
             default -> {
                 log.info("No command found");
-                return null;
+                return SendMessage.builder()
+                        .chatId(message.getChatId())
+                        .text("Такой команды не сущетвует ❌")
+                        .build();
             }
         }
-    }
-
-    private BotApiMethod<?> start(Message message) {
         return SendMessage.builder()
                 .chatId(message.getChatId())
-                .text("""
-                        Привет! Я бот для управления деревом категорий 🌳
-                        
-                        Вот что я могу сделать для тебя:
-                        
-                        /viewTree — Показать дерево категорий в структурированном виде.
-                        
-                        /addElement <название элемента> — Добавить корневой элемент в дерево, если он не имеет родителя.
-                        
-                        /addElement <родительский элемент> <дочерний элемент> — Добавить дочерний элемент к существующему родительскому элементу. Если родительский элемент не найден, я сообщу об этом.
-                        
-                        /removeElement <название элемента> — Удалить элемент и всех его потомков. Если элемент не найден, я также сообщу об этом.
-                        
-                        /help — Показать список всех доступных команд и краткое их описание.
-                        
-                        Используй команды, чтобы управлять деревом категорий. Начни с добавления корневого элемента!
-                        """)
+                .text(botCommand.execute(args))
                 .build();
     }
 
-    private BotApiMethod<?> viewTree(Message message) {
-        return null;
+    private String[] getArgs(Message message) {
+        return message.getText().split(" ");
     }
 
-    private BotApiMethod<?> addElement(Message message) {
-        return null;
-    }
-
-    private BotApiMethod<?> removeElement(Message message) {
-        return null;
-    }
-
-    private BotApiMethod<?> help(Message message) {
-        return SendMessage.builder()
-                .chatId(message.getChatId())
-                .text("""
-                        Вот что я могу сделать для тебя:
-                        
-                        /viewTree — Показать дерево категорий в структурированном виде.
-                        
-                        /addElement <название элемента> — Добавить корневой элемент в дерево, если он не имеет родителя.
-                        
-                        /addElement <родительский элемент> <дочерний элемент> — Добавить дочерний элемент к существующему родительскому элементу. Если родительский элемент не найден, я сообщу об этом.
-                        
-                        /removeElement <название элемента> — Удалить элемент и всех его потомков. Если элемент не найден, я также сообщу об этом.
-                        
-                        /help — Показать список всех доступных команд и краткое их описание.
-                        
-                        Используй команды, чтобы управлять деревом категорий. Начни с добавления корневого элемента!
-                        """)
-                .build();
-    }
 }
