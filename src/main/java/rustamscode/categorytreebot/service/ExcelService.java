@@ -1,12 +1,13 @@
-/*
 package rustamscode.categorytreebot.service;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.jvnet.hk2.annotations.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import rustamscode.categorytreebot.model.Category;
 import rustamscode.categorytreebot.repository.CategoryRepository;
 
@@ -16,9 +17,10 @@ import java.io.InputStream;
 import java.util.List;
 
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ExcelService {
 
-    private final CategoryRepository categoryRepository;
+    final CategoryRepository categoryRepository;
 
     @Autowired
     public ExcelService(CategoryRepository categoryRepository) {
@@ -66,13 +68,10 @@ public class ExcelService {
             if (!parentName.equals("Root")) {
                 parent = categoryRepository.findByName(parentName).orElse(null);
             }
-
             Category category = new Category(categoryName, parent);
             categoryRepository.save(category);
         }
-
         workbook.close();
     }
 }
 
-*/

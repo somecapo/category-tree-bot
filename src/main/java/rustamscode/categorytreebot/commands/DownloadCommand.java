@@ -1,6 +1,8 @@
-/*
 package rustamscode.categorytreebot.commands;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
@@ -13,15 +15,16 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 @Component
-public class DownloadCommand implements BotCommand{
-
-    private final ExcelService excelService;
-    private final Bot categoryBot;
+@Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class DownloadCommand implements BotCommand {
+    final ExcelService excelService;
+    final Bot bot;
 
     @Autowired
-    public DownloadCommand(ExcelService excelService, Bot categoryBot) {
+    public DownloadCommand(ExcelService excelService, Bot bot) {
         this.excelService = excelService;
-        this.categoryBot = categoryBot;
+        this.bot = bot;
     }
 
     @Override
@@ -34,14 +37,13 @@ public class DownloadCommand implements BotCommand{
             InputFile inputFile = new InputFile(inputStream, "categories.xlsx");
             SendDocument sendDocument = new SendDocument();
             sendDocument.setDocument(inputFile);
-            sendDocument.setChatId(args[0]);  // Chat ID передается для отправки файла
+            sendDocument.setChatId(args[1]);  // Chat ID передается для отправки файла
 
-            categoryBot.execute(sendDocument);
+            bot.execute(sendDocument);
             return "Файл с деревом категорий отправлен!";
         } catch (IOException | TelegramApiException e) {
-            e.printStackTrace();
+            log.info("File download error: {}", e.getMessage());
             return "Ошибка при генерации или отправке файла!";
         }
     }
 }
-*/

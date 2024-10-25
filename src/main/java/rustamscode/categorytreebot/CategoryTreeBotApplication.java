@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import rustamscode.categorytreebot.telegram.TelegramProperties;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "rustamscode.categorytreebot")
 @EnableConfigurationProperties(TelegramProperties.class)
 public class CategoryTreeBotApplication {
 
