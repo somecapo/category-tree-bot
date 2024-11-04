@@ -1,8 +1,10 @@
-package rustamscode.categorytreebot.model;
+package rustamscode.categorytreebot.entity;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -22,7 +24,7 @@ public class Category {
     private Category parent;
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
-    private List<Category> children;
+    private List<Category> children = new ArrayList<>();
 
     public Category(String name, Category parent) {
         this.name = name;

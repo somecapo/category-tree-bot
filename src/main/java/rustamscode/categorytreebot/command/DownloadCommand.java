@@ -1,4 +1,4 @@
-package rustamscode.categorytreebot.commands;
+package rustamscode.categorytreebot.command;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;

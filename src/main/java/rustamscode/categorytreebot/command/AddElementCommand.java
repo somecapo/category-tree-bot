@@ -1,10 +1,10 @@
-package rustamscode.categorytreebot.commands;
+package rustamscode.categorytreebot.command;
 
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import rustamscode.categorytreebot.model.Category;
+import rustamscode.categorytreebot.entity.Category;
 import rustamscode.categorytreebot.repository.CategoryRepository;
 
 @Component

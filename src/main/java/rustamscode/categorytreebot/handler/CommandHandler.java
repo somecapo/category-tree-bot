@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import rustamscode.categorytreebot.commands.*;
+import rustamscode.categorytreebot.command.*;
 import rustamscode.categorytreebot.repository.CategoryRepository;
 import rustamscode.categorytreebot.service.ExcelService;
 import rustamscode.categorytreebot.telegram.Bot;

@@ -8,7 +8,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import rustamscode.categorytreebot.model.Category;
+import rustamscode.categorytreebot.entity.Category;
 import rustamscode.categorytreebot.repository.CategoryRepository;
 
 import java.io.ByteArrayOutputStream;
@@ -32,7 +32,7 @@ public class ExcelService {
         List<Category> categories = categoryRepository.findAll();
 
         // Создание новой рабочей книги
-        Workbook workbook = new XSSFWorkbook();
+        var workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Category Tree");
 
         // Строка заголовков
@@ -49,14 +49,14 @@ public class ExcelService {
         }
 
         // Записываем данные в байтовый массив
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        var outputStream = new ByteArrayOutputStream();
         workbook.write(outputStream);
         workbook.close();
         return outputStream.toByteArray();
     }
 
     public void uploadCategoriesFromExcel(InputStream inputStream) throws IOException {
-        Workbook workbook = new XSSFWorkbook(inputStream);
+        var workbook = new XSSFWorkbook(inputStream);
         Sheet sheet = workbook.getSheetAt(0);
 
         for (int i = 1; i <= sheet.getLastRowNum(); i++) {

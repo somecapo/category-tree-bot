@@ -2,7 +2,7 @@ package rustamscode.categorytreebot.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import rustamscode.categorytreebot.model.Category;
+import rustamscode.categorytreebot.entity.Category;
 
 import java.util.Optional;
 

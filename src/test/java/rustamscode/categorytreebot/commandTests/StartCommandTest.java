@@ -1,9 +1,23 @@
-package rustamscode.categorytreebot.commands;
+package rustamscode.categorytreebot.commandTests;
 
-public class StartCommand implements BotCommand {
-    @Override
-    public String execute(String[] args) {
-        return """
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import rustamscode.categorytreebot.command.StartCommand;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class StartCommandTest {
+    private StartCommand startCommand;
+
+    @BeforeEach
+    void setUp() {
+        startCommand = new StartCommand();
+    }
+
+    @Test
+    void testExecuteReturnsWelcomeMessage() {
+        // Ожидаемое сообщение
+        String expectedMessage = """
                 Привет! Я бот для управления деревом категорий 🌳
                 
                 Вот что я могу сделать для тебя:
@@ -24,5 +38,11 @@ public class StartCommand implements BotCommand {
                 
                 Используй команды, чтобы управлять деревом категорий. Начни с добавления корневого элемента!
                 """;
+
+        // Выполнение команды
+        String result = startCommand.execute(new String[]{});
+
+        // Проверка результата
+        assertEquals(expectedMessage, result);
     }
 }
